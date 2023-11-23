@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\CriteriaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolesController;
@@ -41,6 +42,15 @@ Route::group(['middleware' => 'auth'], function(){
 	// logout route
 	Route::get('/logout', [LoginController::class,'logout']);
 	Route::get('/clear-cache', [HomeController::class,'clearCache']);
+
+	// criteria
+	Route::get('/criterias', [CriteriaController::class,'index'])->name('criteria.index');
+	Route::get('/criteria/get-list', [CriteriaController::class,'getCriteriaList']);
+	Route::get('/criteria/create', [CriteriaController::class,'create']);
+	Route::post('/criteria/create', [CriteriaController::class,'store'])->name('create-criteria');
+	Route::get('/criteria/{id}', [CriteriaController::class,'edit']);
+	Route::post('/criteria/update', [CriteriaController::class,'update']);
+	Route::get('/criteria/delete/{id}', [CriteriaController::class,'delete']);
 
 	// dashboard route  
 	Route::get('/dashboard', function () { 

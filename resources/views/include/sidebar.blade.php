@@ -39,11 +39,11 @@
                     </div>
                 </div>
                 
-                <div class="nav-item {{ ($segment1 == 'profile' || $segment1 == 'invoice'||$segment1 == 'session-timeout') ? 'active open' : '' }} has-sub">
+                <div class="nav-item {{ ($segment1 == 'criterias' || $segment1 == 'invoice') ? 'active open' : '' }} has-sub">
                     <a href="#"><i class="ik ik-file-text"></i><span>{{ __('Data Master')}}</span></a>
                     <div class="submenu-content">
-                        <a href="{{url('profile')}}" class="menu-item {{ ($segment1 == 'profile') ? 'active' : '' }}">Alternative</a>
-                        <a href="{{url('invoice')}}" class="menu-item {{ ($segment1 == 'invoice') ? 'active' : '' }}">Criteria</a>
+                        <a href="{{url('invoice')}}" class="menu-item {{ ($segment1 == 'invoice') ? 'active' : '' }}">Alternative</a>
+                        <a href="{{route('criteria.index')}}" class="menu-item {{ ($segment1 == 'criterias') ? 'active' : '' }}">Criteria</a>
                     </div>
                 </div>
                 <div class="nav-item {{ ($segment1 == 'icons') ? 'active' : '' }}">
