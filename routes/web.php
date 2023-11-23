@@ -9,6 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,10 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('/dashboard', function () { 
 		return view('pages.dashboard'); 
 	})->name('dashboard');
+
+	// calcluate topsis
+	Route::get('/calculate-topsis', [TransactionController::class, 'topsis'])->name('calculate-topsis');
+	Route::post('/upload-topsis', [TransactionController::class, 'upload'])->name('upload-topsis');
 
 	//only those have manage_user permission will get access
 	Route::group(['middleware' => 'can:manage_user'], function(){

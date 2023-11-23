@@ -46,34 +46,13 @@
                         <a href="{{url('invoice')}}" class="menu-item {{ ($segment1 == 'invoice') ? 'active' : '' }}">Criteria</a>
                     </div>
                 </div>
-                <div class="nav-item {{ ($segment1 == 'layouts') ? 'active' : '' }}">
-                    <a href="{{url('layouts')}}"><i class="ik ik-layout"></i><span>{{ __('Layouts')}}</span></a>
-                </div>
                 <div class="nav-item {{ ($segment1 == 'icons') ? 'active' : '' }}">
                     <a href="{{url('icons')}}"><i class="ik ik-command"></i><span>{{ __('Icons')}}</span></a>
                 </div>
-                <div class="nav-item {{ ($segment1 == 'calculate') ? 'active' : '' }}">
-                    <a href="{{url('calculate')}}"><i class="ik ik-sliders"></i><span>{{ __('Calculate Topsis')}}</span></a>
+                <div class="nav-item {{ ($segment1 == 'calculate-topsis') ? 'active' : '' }}">
+                    <a href="{{route('calculate-topsis')}}"><i class="ik ik-sliders"></i><span>{{ __('Calculate Topsis')}}</span></a>
                 </div>
-                <div class="nav-item {{ ($segment1 == 'pricing') ? 'active' : '' }}">
-                    <a href="{{url('pricing')}}"><i class="ik ik-dollar-sign"></i><span>{{ __('Pricing')}}</span><span class=" badge badge-success badge-right">{{ __('New')}}</span></a>
-                </div>
-                <div class="nav-item has-sub">
-                    <a href="javascript:void(0)"><i class="ik ik-list"></i><span>{{ __('Menu Levels')}}</span></a>
-                    <div class="submenu-content">
-                        <a href="javascript:void(0)" class="menu-item">{{ __('Menu Level 2.1')}}</a>
-                        <div class="nav-item {{ ($segment1 == '') ? 'active' : '' }} has-sub">
-                            <a href="javascript:void(0)" class="menu-item">{{ __('Menu Level 2.2')}}</a>
-                            <div class="submenu-content">
-                                <a href="javascript:void(0)" class="menu-item">{{ __('Menu Level 3.1')}}</a>
-                            </div>
-                        </div>
-                        <a href="javascript:void(0)" class="menu-item">{{ __('Menu Level 2.3')}}</a>
-                    </div>
-                </div>
-                <div class="nav-item">
-                    <a href="javascript:void(0)" class="disabled"><i class="ik ik-slash"></i><span>{{ __('Disabled Menu')}}</span></a>
-                </div>
+                
                 
         </div>
     </div>
