@@ -291,7 +291,7 @@ class TransactionController extends Controller
                         $query->where('name', $criteriaName);
                     })
                     ->value('value');
-    
+
                 // Normalize the value by dividing it with the corresponding divisor
                 $normalizedValue = $divisors[$criteriaName] !== 0 ? $value / $divisors[$criteriaName] : 0;
                 // $formattedValue = round($normalizedValue, 3);

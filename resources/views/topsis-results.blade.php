@@ -181,6 +181,19 @@
                                     </tr>
                                     @endforeach
 
+                                    <tr class="">
+                                        <th scope="row" colspan="2" class="text-center">MAX</th>
+                                        @foreach ($idealSolution['MAX'] as $item)
+                                          <td class="text-center">{{$item}}</td>
+                                        @endforeach
+                                      </tr>
+                      
+                                    <tr class="">
+                                    <th scope="row" colspan="2" class="text-center">MIN</th>
+                                    @foreach ($idealSolution['MIN'] as $item)
+                                        <td class="text-center">{{$item}}</td>
+                                    @endforeach
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -331,7 +344,6 @@
                                         <td> {{ $result['rank'] }} </td>
                                     </tr>
                                     @endforeach
-
                                 </tbody>
                             </table>
                         </div>
