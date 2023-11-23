@@ -1,5 +1,5 @@
 @extends('layouts.main') 
-@section('title', 'Table Bootstrap')
+@section('title', 'Calculate Topsis Step By Step')
 @section('content')
     <!-- push external head elements to head -->
     @push('head')
@@ -14,8 +14,8 @@
                     <div class="page-header-title">
                         <i class="ik ik-credit-card bg-blue"></i>
                         <div class="d-inline">
-                            <h5>{{ __('Bootstrap Tables')}}</h5>
-                            <span>{{ __('lorem ipsum dolor sit amet, consectetur adipisicing elit')}}</span>
+                            <h5>{{ __('Calculate Topsis Step By Step')}}</h5>
+                            <span>{{ __('SPK TOPSIS')}}</span>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                 <div class="card">
                     <div class="card-header d-block">
                         <h3>{{ __('Matrix')}}</h3>
-                        <span>use class <code>table</code> inside table element</span>
+                        <span>Tahap  <code>Pertama</code> Matriks Awal</span>
                     </div>
                     <div class="card-body p-0 table-border-style">
                         <div class="table-responsive p-4">
@@ -76,7 +76,7 @@
                 <div class="card">
                     <div class="card-header d-block">
                         <h3>{{ __('Nomalisasi Matrix')}}</h3>
-                        <span>use class <code>table</code> inside table element</span>
+                        <span>Tahap  <code>Kedua</code> Normalisasi Matrix</span>
                     </div>
                     <div class="card-body p-0 table-border-style">
                         <div class="table-responsive p-4">
@@ -111,7 +111,8 @@
                 <div class="card">
                     <div class="card-header d-block">
                         <h3>{{ __('Weight Matrix')}}</h3>
-                        <span>use class <code>table</code> inside table element</span>
+                        <span>Tahap  <code>Ke tiga</code> Pembobotan Matrix</span>
+
                     </div>
                     <div class="card-body p-0 table-border-style">
                         <div class="table-responsive p-4">
@@ -149,7 +150,9 @@
                 {{-- Ideal Positive --}}
                 <div class="card">
                     <div class="card-header d-block">
-                        <h3>Matrix Solusi Ideal Positive</h3>
+                        <h3>Matrix Solusi Ideal </h3>
+                        <span>Tahap  <code>Keempat</code>  Matrix Solusi Ideal</span>
+
                     </div>
                     <div class="card-body p-0 table-border-style">
                         <div class="table-responsive p-4">
@@ -265,7 +268,7 @@
                 <div class="card">
                     <div class="card-header d-block">
                         <h3>{{ __('Result Pereference')}}</h3>
-                        <span>use class <code>table</code> inside table element</span>
+                        <span>Tahap <code>Keenam</code> Mencari Hasil Reference</span>
                     </div>
                     <div class="card-body p-0 table-border-style">
                         <div class="table-responsive p-4">
@@ -300,7 +303,8 @@
                 <div class="card">
                     <div class="card-header d-block">
                         <h3>{{ __('Rank Result')}}</h3>
-                        {{-- <span>use class <code>table</code> inside table element</span> --}}
+                        <span>Tahap <code>Ke 7</code> Perankingan</span>
+
                     </div>
                     <div class="card-body p-0 table-border-style">
                         <div class="table-responsive p-4">

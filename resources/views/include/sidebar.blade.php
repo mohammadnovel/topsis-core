@@ -47,9 +47,9 @@
                         <a href="{{route('transaction.index')}}" class="menu-item {{ ($segment1 == 'transactions') ? 'active' : '' }}">Transaksi</a>
                     </div>
                 </div>
-                <div class="nav-item {{ ($segment1 == 'icons') ? 'active' : '' }}">
+                {{-- <div class="nav-item {{ ($segment1 == 'icons') ? 'active' : '' }}">
                     <a href="{{url('icons')}}"><i class="ik ik-command"></i><span>{{ __('Icons')}}</span></a>
-                </div>
+                </div> --}}
                 <div class="nav-item {{ ($segment1 == 'calculate-topsis') ? 'active' : '' }}">
                     <a href="{{route('calculate-topsis')}}"><i class="ik ik-sliders"></i><span>{{ __('Calculate Topsis')}}</span></a>
                 </div>
