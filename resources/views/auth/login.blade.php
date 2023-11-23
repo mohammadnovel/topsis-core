@@ -3,7 +3,7 @@
     <head> 
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Login | Laravel Admin Starter Kit - Radmin</title>
+        <title>Login | Core-Topsis</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,9 +33,9 @@
                     <div class="col-xl-4 col-lg-4 col-md-4 m-auto">
                         <div class="authentication-form mx-auto">
                             <div class="logo-centered">
-                                <a href="http://radmin.rakibhstu.com"><img height="40" src="{{ asset('img/logo.png') }}" alt="RADMIN" ></a>
+                                <a href="http://manvear.com"><img height="40" src="{{ asset('img/logo.png') }}" alt="RADMIN" ></a>
                             </div>
-                            <p>Welcome back! </p>
+                            <p>Holaaa! </p>
                             <form method="POST" action="{{ route('login') }}">
                             @csrf
                                 <div class="form-group">
