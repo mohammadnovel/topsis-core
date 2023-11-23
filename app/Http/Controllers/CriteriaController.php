@@ -17,8 +17,8 @@ class CriteriaController extends Controller
 
     public function importCriteria(Request $request)
     {
-        $file = $request->file('your_excel_file'); // Assuming you have a file input named 'your_excel_file'
-
+        $file = $request->file; // Assuming you have a file input named 'your_excel_file'
+        // dd($file);
         Excel::import(new CriteriaImport, $file);
 
         return redirect()->back()->with('success', 'Criteria imported successfully!');

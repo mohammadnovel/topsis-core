@@ -11,21 +11,155 @@ use App\Imports\TransactionImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use DataTables,Auth;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Validator;
 class TransactionController extends Controller
 {
+    public function index()
+    {
+        return view('transaction.index');
+    }
+
+    public function getTransactionList(Request $request)
+    {
+        
+        $data  = Transaction::with(['criterias','alternatives'])->get();
+
+        return Datatables::of($data)
+                
+                ->addColumn('action', function($data){
+                    if($data->name == 'Super Admin'){
+                        return '';
+                    }
+                    if (Auth::user()->can('manage_transaction')){
+                        return '<div class="table-actions">
+                                <a href="'.url('transaction/'.$data->id).'" ><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
+                                <a href="'.url('transaction/delete/'.$data->id).'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                            </div>';
+                    }else{
+                        return '';
+                    }
+                })
+                ->editColumn('created_at', function ($data) {
+                    return Carbon::parse($data->created_at)->format('Y-m-d H:i');
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+    }
+
+    public function create()
+    {
+        try
+        {
+           
+            return view('create-transaction');
+
+        }catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+
+        }
+    }
+
+    public function store(Request $request)
+    {
+        // create user 
+        $validator = Validator::make($request->all(), [
+            'alternative_id'     => 'required',
+            'criteria_id'     => 'required',
+            'value'     => 'required',
+        ]);
+        
+        if($validator->fails()) {
+            return redirect()->back()->withInput()->with('error', $validator->messages()->first());
+        }
+        try
+        {
+            // store alternative information
+            $transaction = Transaction::create([
+                        'alternative_id'     => $request->alternative_id,
+                        'criteria_id'     => $request->criteria_id,
+                        'value'     => $request->value,
+                    ]);
+
+            if($transaction){ 
+                return redirect('transactions')->with('success',' transaksi telah berhasil di tambah!');
+            }else{
+                return redirect('transactions')->with('error', 'Failed to create new transaction! Try again.');
+            }
+        }catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    public function edit($id)
+    {
+        try
+        {
+            $transaction  = Transaction::find($id);
+
+            if($transaction){
+
+                return view('transactio$transaction.edit', compact('transactio$transaction'));
+            }else{
+                return redirect('404');
+            }
+
+        }catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    public function update(Request $request)
+    {
+
+        // update user info
+        $validator = Validator::make($request->all(), [
+            'id'       => 'required',
+            'alternative_id'     => 'required',
+            'criteria_id'     => 'required',
+            'value'     => 'required',
+        ]);
+
+        
+        
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->with('error', $validator->messages()->first());
+        }
+
+        try{
+            
+            $transaction = Transaction::find($request->id);
+            // dd($transaction);
+
+            $update = $transaction->update([
+                'name' => $request->name,
+            ]);
+            return redirect('transactions')->with('success', 'transaction information updated succesfully!');
+        }catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+
+        }
+    }
+
+
+    public function delete($id)
+    {
+        $transaction   = Transaction::find($id);
+        if($transaction){
+            $transaction->delete();
+            return redirect('transactions')->with('success','transaksi telah terhapus!');
+        }else{
+            return redirect('transactions')->with('error', 'transaction not found');
+        }
+    }
+
     public function upload(Request $request)
     {
-        // $request->validate([
-        //     'file' => 'required|mimes:xlsx',
-        // ]);
-
-        // // Get the file from the request
-        // $file = $request->file('file');
-
-        // // Import data from the Excel file using TransactionsImport
-        // Excel::import(new TransactionImport, $file);
-
-        // return redirect()->back()->with('success', 'Data imported successfully');
         $request->validate([
             'file' => 'required|mimes:xlsx',
         ]);
@@ -50,12 +184,12 @@ class TransactionController extends Controller
 
     public function topsis()
     {
+        $criterias = Criteria::all();
+
         //matrix awal
         $matrix = $this->Matrix();
         // Step 1: Normalize the Decision Matrix
         $normalizedMatrix = $this->normalizeDecisionMatrix();
-        $criterias = Criteria::all();
-// dd(count($normalizedMatrix));
         // Step 2: Determine Weighted Normalized Decision Matrix
         $weightedMatrix = $this->calculateWeightedMatrix($normalizedMatrix);
 
@@ -89,12 +223,13 @@ class TransactionController extends Controller
     private function Matrix()
     {
         $alternatives = Alternative::all();
+        // dd($alternatives);
         $criteriaNames = Criteria::pluck('name');
         $Matrix = [];
 
         foreach ($alternatives as $alternative) {
             $normalizedRow = [];
-    
+            // dd($alternative->initials);
             foreach ($criteriaNames as $criteriaName) {
                 $value = Transaction::where('alternative_id', $alternative->id)
                     ->whereHas('criterias', function ($query) use ($criteriaName) {
@@ -107,7 +242,7 @@ class TransactionController extends Controller
     
             $Matrix[$alternative->id] = [
                 'id' => $alternative->id,
-                'name' => $alternative->name,
+                'name' => $alternative->initials,
                 'values' => $normalizedRow,
             ];
         }
@@ -167,7 +302,7 @@ class TransactionController extends Controller
     
             $normalizedMatrix[$alternative->id] = [
                 'id' => $alternative->id,
-                'name' => $alternative->name,
+                'name' => $alternative->initials,
                 'values' => $normalizedRow,
             ];
         }
@@ -411,7 +546,7 @@ class TransactionController extends Controller
 
             $results[] = [
                 'id' => $alternativeId,
-                'name' => $alternative->name,
+                'name' => $alternative->initials,
                 'DPositive_value' => $positiveValue,
                 'DNegative_value' => $negativeValue,
                 'result' => number_format($totalValue, 3,'.',','),

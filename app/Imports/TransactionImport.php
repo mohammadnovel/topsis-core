@@ -21,7 +21,7 @@ class TransactionImport implements ToModel
     {
         $alternativeName = array_shift($row);
 
-        $alternative = Alternative::where('id', $alternativeName)->first();
+        $alternative = Alternative::where('name', $alternativeName)->first();
 
         if ($alternative) {
             $alternativeId = $alternative->id;

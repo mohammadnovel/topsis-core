@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlternativeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\TransactionController;
+use App\Models\Transaction;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +53,27 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('/criteria/{id}', [CriteriaController::class,'edit']);
 	Route::post('/criteria/update', [CriteriaController::class,'update']);
 	Route::get('/criteria/delete/{id}', [CriteriaController::class,'delete']);
+	Route::post('/criteria-upload', [CriteriaController::class, 'importCriteria'])->name('upload-criteria');
 
+	// alternative
+	Route::get('/alternatives', [AlternativeController::class,'index'])->name('alternative.index');
+	Route::get('/alternative/get-list', [AlternativeController::class,'getAlternativeList']);
+	Route::get('/alternative/create', [AlternativeController::class,'create']);
+	Route::post('/alternative/create', [AlternativeController::class,'store'])->name('create-alternative');
+	Route::get('/alternative/{id}', [AlternativeController::class,'edit']);
+	Route::post('/alternative/update', [AlternativeController::class,'update']);
+	Route::get('/alternative/delete/{id}', [AlternativeController::class,'delete']);
+	Route::post('/alternative-upload', [AlternativeController::class, 'import'])->name('upload-alternative');
+
+	// transaction
+	Route::get('/transactions', [TransactionController::class,'index'])->name('transaction.index');
+	Route::get('/transaction/get-list', [TransactionController::class,'gettransactionList']);
+	Route::get('/transaction/create', [TransactionController::class,'create']);
+	Route::post('/transaction/create', [TransactionController::class,'store'])->name('create-transaction');
+	Route::get('/transaction/{id}', [TransactionController::class,'edit']);
+	Route::post('/transaction/update', [TransactionController::class,'update']);
+	Route::get('/transaction/delete/{id}', [TransactionController::class,'delete']);
+	Route::post('/transaction-upload', [TransactionController::class, 'upload'])->name('upload-transaction');
 	// dashboard route  
 	Route::get('/dashboard', function () { 
 		return view('pages.dashboard'); 

@@ -1,5 +1,5 @@
 @extends('layouts.main') 
-@section('title', 'Criteria')
+@section('title', 'Alternative')
 @section('content')
     <!-- push external head elements to head -->
     @push('head')
@@ -14,8 +14,8 @@
                     <div class="page-header-title">
                         <i class="ik ik-users bg-blue"></i>
                         <div class="d-inline">
-                            <h5>{{ __('Kriteria')}}</h5>
-                            <span>{{ __('List of Kriteria')}}</span>
+                            <h5>{{ __('Alternative')}}</h5>
+                            <span>{{ __('List of Alternative')}}</span>
                         </div>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                                 <a href="{{route('dashboard')}}"><i class="ik ik-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">{{ __('Kriterua')}}</a>
+                                <a href="#">{{ __('Alternative')}}</a>
                             </li>
                         </ol>
                     </nav>
@@ -41,29 +41,18 @@
             
 			<div class="col-md-12">
 	            <div class="card">
-	                <div class="card-header"><h3>{{ __('Add Criteria')}}</h3></div>
+	                <div class="card-header"><h3>{{ __('Add Alternative')}}</h3></div>
 	                <div class="card-body">
-	                    <form class="forms-sample" method="POST" action="{{url('criteria/create')}}">
+	                    <form class="forms-sample" method="POST" action="{{url('alternative/create')}}">
 	                    	@csrf
 	                        <div class="row">
 	                            <div class="col-sm-12">
 	                                <div class="form-group">
-	                                    <label for="name">{{ __('Name Criteria')}}<span class="text-red">*</span></label>
+	                                    <label for="name">{{ __('Name Alternative')}}<span class="text-red">*</span></label>
 	                                    <input type="text" class="form-control " id="name" name="name" placeholder=" Name" required>
 	                                </div>
 	                            </div>
-                                <div class="col-sm-12">
-	                                <div class="form-group">
-	                                    <label for="type">{{ __('Type')}}<span class="text-red">*</span></label>
-	                                    <input type="text" class="form-control " id="type" name="type" placeholder="Tipe" required>
-	                                </div>
-	                            </div>
-                                <div class="col-sm-12">
-	                                <div class="form-group">
-	                                    <label for="Weight">{{ __('Bobot')}}<span class="text-red">*</span></label>
-	                                    <input type="text" class="form-control " id="Weight" name="weight" placeholder="Weight " required>
-	                                </div>
-	                            </div>
+                                
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary btn-rounded">{{ __('Save')}}</button>
@@ -82,19 +71,18 @@
             <div class="col-md-12">
                 
                 <div class="card p-3">
-                    <div class="card-header"><h3>{{ __('Kriteria')}}</h3></div>
+                    <div class="card-header"><h3>{{ __('Alternative')}}</h3></div>
                     <div class="card-body template-demo">
                             
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#demoModal">{{ __('Upload Data Excel')}}</button>
                     </div>
                     <div class="card-body">
-                        
-                        <table id="criteria_table" class="table">
+                        <table id="alternative_table" class="table">
                             <thead>
                                 <tr>
                                     <th>{{ __('Name')}}</th>
-                                    <th>{{ __('Type')}}</th>
-                                    <th>{{ __('Weight')}}</th>
+                                    <th>{{ __('Initial')}}</th>
+                                    <th>{{ __('Tanggal')}}</th>
                                     <th>{{ __('Action')}}</th>
                                 </tr>
                             </thead>
@@ -108,10 +96,10 @@
         <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="demoModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <form action="{{ route('upload-criteria') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('upload-alternative') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-header">
-                            <h5 class="modal-title" id="demoModalLabel">{{ __('Modal title')}}</h5>
+                            <h5 class="modal-title" id="demoModalLabel">{{ __('Upload Alternative')}}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">

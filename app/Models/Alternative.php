@@ -12,4 +12,17 @@ class Alternative extends Model
     protected $fillable = [
         'name',
     ];
+    protected $appends = ['initials'];
+
+    public function getInitialsAttribute()
+    {
+        $words = explode(' ', $this->name);
+
+        $initials = '';
+        foreach ($words as $word) {
+            $initials .= strtoupper(substr($word, 0, 1));
+        }
+
+        return $initials;
+    }
 }
