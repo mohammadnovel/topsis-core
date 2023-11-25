@@ -4,6 +4,7 @@
     <!-- push external head elements to head -->
     @push('head')
         <link rel="stylesheet" href="{{ asset('plugins/DataTables/datatables.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.min.css') }}">
     @endpush
 
     
@@ -54,14 +55,19 @@
 	                            </div>
                                 <div class="col-sm-12">
 	                                <div class="form-group">
-	                                    <label for="type">{{ __('Type')}}<span class="text-red">*</span></label>
-	                                    <input type="text" class="form-control " id="type" name="type" placeholder="Tipe" required>
+	                                    <label for="type">{{ __('Type')}}
+                                            <span class="text-red">*</span></label>
+                                        <select class="form-control select2" id="" name="type">
+                                            <option value="BENEFIT">{{ __('BENEFIT')}}</option>
+                                            <option value="COST">{{ __('COST')}}</option>
+                                        </select>
+	                                    {{-- <input type="text" class="form-control " id="type" name="type" placeholder="Tipe" required> --}}
 	                                </div>
 	                            </div>
                                 <div class="col-sm-12">
 	                                <div class="form-group">
 	                                    <label for="Weight">{{ __('Bobot')}}<span class="text-red">*</span></label>
-	                                    <input type="text" class="form-control " id="Weight" name="weight" placeholder="Weight " required>
+	                                    <input type="number" class="form-control " id="Weight" name="weight" placeholder="Weight " required>
 	                                </div>
 	                            </div>
                                 <div class="col-sm-12">
