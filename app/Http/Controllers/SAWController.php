@@ -13,7 +13,7 @@ class SAWController extends Controller
     {
         $alternatives = Alternative::all();
         // dd($alternatives);
-        $criteriaNames = Criteria::pluck('name');
+        $criteriaNames = Criteria::all();
         $decisionMatrix = [];
 
         foreach ($alternatives as $alternative) {
@@ -23,11 +23,15 @@ class SAWController extends Controller
             foreach ($criteriaNames as $criteriaName) {
                 $value = Transaction::where('alternative_id', $alternative->id)
                     ->whereHas('criterias', function ($query) use ($criteriaName) {
-                        $query->where('name', $criteriaName);
+                        $query->where('name', $criteriaName->name);
                     })
                     ->value('value');
     
-                $getCriteria[] = $value;
+                $getCriteria[] = [
+                    'criteria_id' => $criteriaName->id,
+                    'type' => $criteriaName->type,
+                    'value' => ($value != null ? $value : 0)
+                ];
             }
 
             // $decisionMatrix[] = $row;
@@ -37,8 +41,16 @@ class SAWController extends Controller
                 'values' => $getCriteria,
             ];
         }
+        // $maxValues = [];
+        // $minValues = [];
+
+        // // Find maximum and minimum values for each criterion
+        // foreach ($criteriaNames as $criterionId => $criteriaName) {
+        //     $maxValues[$criteriaName] = Transaction::where('criteria_id', $criterionId)->max('value');
+        //     $minValues[$criteriaName] = Transaction::where('criteria_id', $criterionId)->min('value');
+        // }
         
-        // dd($decisionMatrix);
+        dd($decisionMatrix);
         return $decisionMatrix;
     }
 

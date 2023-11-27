@@ -300,6 +300,16 @@
                 {data:'action', name: 'action'}
 
             ],
+            columnDefs: [
+                {
+                    targets: 2, // index of the 'weight' column
+                    render: function (data, type, full, meta) {
+                        // Assuming 'weight' is a numeric value, you can format it as needed
+                        return parseFloat(data).toFixed(1); // Format to 2 decimal places
+                        // If 'weight' is an integer, you might simply use `return data;`
+                    }
+                }
+            ],
             buttons: [
                 {
                     extend: 'copy',
