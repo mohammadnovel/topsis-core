@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\SAWController;
 use App\Models\Transaction;
 
 /*
@@ -27,7 +28,7 @@ use App\Models\Transaction;
 Route::get('/', function () {
     return redirect()->route('login');
 })->name('/');
-
+Route::get('/calculate-saw', [SAWController::class, 'getNormalizedMatrix'])->name('calculate-saw');
 Route::get('login', [LoginController::class,'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class,'login']);
 Route::post('register', [RegisterController::class,'register']);

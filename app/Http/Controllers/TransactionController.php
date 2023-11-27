@@ -181,7 +181,7 @@ class TransactionController extends Controller
         }
     }
 
-
+    // topsis
     public function topsis()
     {
         $criterias = Criteria::all();

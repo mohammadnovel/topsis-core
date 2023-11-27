@@ -14,6 +14,8 @@ class AlternativesImport implements ToCollection
     */
     public function collection(Collection $rows)
     {
+        // dd($rows);
+
         $rows = $rows->skip(1);  // Skip the first row (header row)
         foreach ($rows as $row) {
             $name = $row[0]; // Assuming the name is in the first column
