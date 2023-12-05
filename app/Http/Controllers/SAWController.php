@@ -9,15 +9,34 @@ use App\Models\Transaction;
 
 class SAWController extends Controller
 {
-    public function getMatrix()
+    public function SAW() {
+        $matrix = $this->getMatrix();
+        $getSumMatrix = $this->getSumMatrix();
+        $normalizedMatrix = $this->getSumMatrixNormalized();
+        $weightedNormalized = $this->NormalizeWeighted();
+        $reference = $this->getPrefrence();
+        $rankedReference = $this->rankReference();
+        $criterias = Criteria::all();
+        // dd($rankedReference);
+        return view('saw-results', 
+            compact([
+                'matrix',
+                'getSumMatrix',
+                'normalizedMatrix',
+                'weightedNormalized',
+                'reference',
+                'rankedReference',
+                'criterias'
+            ])
+        ); 
+    }
+    private function getMatrix()
     {
         $alternatives = Alternative::all();
-        // dd($alternatives);
         $criteriaNames = Criteria::all();
         $decisionMatrix = [];
 
         foreach ($alternatives as $alternative) {
-            // $row = ['alternative_id' => $alternative->id, 'alternative_name' => $alternative->name];
             $getCriteria = [];
 
             foreach ($criteriaNames as $criteriaName) {
@@ -34,109 +53,139 @@ class SAWController extends Controller
                 ];
             }
 
-            // $decisionMatrix[] = $row;
             $decisionMatrix[$alternative->id] = [
                 'id' => $alternative->id,
                 'name' => $alternative->name,
                 'values' => $getCriteria,
             ];
         }
-        // $maxValues = [];
-        // $minValues = [];
-
-        // // Find maximum and minimum values for each criterion
-        // foreach ($criteriaNames as $criterionId => $criteriaName) {
-        //     $maxValues[$criteriaName] = Transaction::where('criteria_id', $criterionId)->max('value');
-        //     $minValues[$criteriaName] = Transaction::where('criteria_id', $criterionId)->min('value');
-        // }
-        
-        dd($decisionMatrix);
+        // dd($decisionMatrix);
         return $decisionMatrix;
     }
 
-    public function getNormalizedMatrix()
+    private function getSumMatrix()
     {
         $decisionMatrix = $this->getMatrix();
+        $sumMatrix = [];
+        foreach ($decisionMatrix as $item) {
+            foreach ($item['values'] as $criteria) {
+                $criteriaId = $criteria['criteria_id'];
+                $value = floatval($criteria['value']);
 
-        // Inisialisasi matriks normalisasi
-        $normalizedMatrix = [];
-
-        // Normalisasi setiap baris
-        foreach ($decisionMatrix as $row) {
-            $total = array_sum($row['values']);
-            $normalizedValues = [];
-
-            foreach ($row['values'] as $value) {
-                $normalizedValues[] = $value ? $value / $total : null;
-            }
-
-            $normalizedMatrix[$row['id']] = [
-                'id' => $row['id'],
-                'name' => $row['name'],
-                'normalized_values' => $normalizedValues,
-            ];
-        }
-        dd($normalizedMatrix);
-        return $normalizedMatrix;
-    }
-
-    public function getWeightedMatrix()
-    {
-        $normalizedMatrix = $this->getNormalizedMatrix();
-        $criteriaWeights = Criteria::pluck('weight', 'id')->all();
-
-        // Inisialisasi matriks berbobot
-        $weightedMatrix = [];
-
-        // Hitung nilai berbobot untuk setiap baris
-        foreach ($normalizedMatrix as $row) {
-            $weightedValues = [];
-
-            foreach ($row as $key => $value) {
-                if (strpos($key, 'criteria_') !== false) {
-                    $criterionId = str_replace('criteria_', '', $key);
-                    $weightedValues[$key] = $value ? $value * $criteriaWeights[$criterionId] : null;
-                } else {
-                    $weightedValues[$key] = $value;
+                if ($criteria['type'] == 'BENEFIT') {
+                    $sumMatrix[$criteriaId] = isset($sumMatrix[$criteriaId])
+                        ? max($sumMatrix[$criteriaId], floatval($value))
+                        : floatval($value);
+                } elseif ($criteria['type'] == 'COST') {
+                    $sumMatrix[$criteriaId] = isset($sumMatrix[$criteriaId])
+                        ? min($sumMatrix[$criteriaId], floatval($value))
+                        : floatval($value);
                 }
             }
-
-            $weightedMatrix[] = $weightedValues;
         }
 
-        return $weightedMatrix;
+        return $sumMatrix;
     }
 
-    public function getPreferences()
-    {
-        $weightedMatrix = $this->getWeightedMatrix();
-
-        // Inisialisasi nilai preferensi
-        $preferences = [];
-
-        foreach ($weightedMatrix as $row) {
-            $preferences[] = array_sum(array_values($row));
+    private function getSumMatrixNormalized() {
+        $decisionMatrix = $this->getMatrix();
+        $sumMatrix = $this->getSumMatrix();
+        // Proses pembagian nilai
+        $result = [];
+        foreach ($decisionMatrix as $matrix) {
+            $getResult = [];
+            foreach ($matrix['values'] as &$value) {
+                $criteriaId = $value['criteria_id'];
+                $divisionResult = floatval($value['value']) / floatval($sumMatrix[$criteriaId]);
+            
+                $value['value'] = round($divisionResult, 4);
+            
+                $getResult[] = [
+                    'criteria_id' => $criteriaId,
+                    'type' => $value['type'],
+                    'value' => $value['value']
+                ];
+            }
+            // dd($getResult);
+            $result[$matrix['id']] = [
+                'id' => $matrix['id'],
+                'name' => $matrix['name'],
+                'values' => $getResult
+            ];
         }
-
-        return $preferences;
+        return $result;
+        // dd($result);
     }
 
-    public function getRank()
-    {
-        $preferences = $this->getPreferences();
+    private function NormalizeWeighted() {
+        $dataMatrix = $this->getSumMatrixNormalized();
+        // $criterias = Criteria::all();
+        // dd($criterias);
+        $result = [];
+        foreach ($dataMatrix as $matrix) {
+            $resultWeighted = [];
+            foreach ($matrix['values'] as $item) {
+                $criteriaId = $item['criteria_id'];
 
-        // Sorting nilai preferensi untuk mendapatkan peringkat
-        arsort($preferences);
+                // Find the corresponding criteria data
+                $criteria = Criteria::where('id', $criteriaId)->first();
+                // dd($criteria);
+                $weight = floatval($criteria['weight']);
+                $multipliedValue = floatval($item['value']) * $weight;
 
-        // Inisialisasi peringkat
-        $rank = [];
+                $resultWeighted[] = [
+                    'criteria_id' => $criteriaId,
+                    'type' => $item['type'],
+                    'value' => round($multipliedValue, 2)
+                ];
+            }
+            $result[$matrix['id']] = [
+                'id' => $matrix['id'],
+                'name' => $matrix['name'],
+                'values' => $resultWeighted
+            ];
+        }
+        // dd($result);
+        return $result;
+    }
+    
+    private function getPrefrence() {
+        $decisionMatrix = $this->NormalizeWeighted();
 
-        $i = 1;
-        foreach ($preferences as $key => $value) {
-            $rank[] = ['rank' => $i, 'alternative_id' => $key + 1, 'preference_value' => $value];
-            $i++;
+        $sumByAlternative = [];
+
+        foreach ($decisionMatrix as $matrix) {
+            $alternativeId = $matrix['id'];
+            $sumValues = 0;  // Initialize sum for each alternative_id
+        
+            foreach ($matrix['values'] as $value) {
+                $sumValues += floatval($value['value']);
+            }
+        
+            $sumByAlternative[$alternativeId] = [
+                'alternative_id' => $alternativeId,
+                'name' => $matrix['name'],
+                'values' => $matrix['values'],
+                'result' => round($sumValues, 2),
+            ];
         }
 
-        return $rank;
+        return $sumByAlternative;
+    }
+
+    private function rankReference() {
+        $resultPreference = $this->getPrefrence();
+        // Sort results by the 'result' key in descending order
+        usort($resultPreference, function ($a, $b) {
+            return $b['result'] <=> $a['result'];
+        });
+
+        // Add rank
+        $rank = 1;
+        foreach ($resultPreference as &$result) {
+            $result['rank'] = $rank++;
+        }
+        // dd($resultPreference);
+        return $resultPreference;
     }
 }

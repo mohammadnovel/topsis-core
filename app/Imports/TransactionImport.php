@@ -20,7 +20,7 @@ class TransactionImport implements ToModel
     public function model(array $row)
     {
         $alternativeName = array_shift($row);
-
+// dd($row);
         $alternative = Alternative::where('name', $alternativeName)->first();
 
         if ($alternative) {
@@ -29,10 +29,10 @@ class TransactionImport implements ToModel
             $transactions = [];
             foreach ($this->criteriaNames as $index => $criteriaName) {
                 $criteria = Criteria::where('name', $criteriaName)->first();
-
                 if ($criteria) {
                     $criteriaId = $criteria->id;
                     $value = $row[$index];
+                    // dd($value);
 
                     // Create a new Transaction instance
                     $transactions[] = new Transaction([

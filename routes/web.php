@@ -28,7 +28,6 @@ use App\Models\Transaction;
 Route::get('/', function () {
     return redirect()->route('login');
 })->name('/');
-Route::get('/calculate-saw', [SAWController::class, 'getNormalizedMatrix'])->name('calculate-saw');
 Route::get('login', [LoginController::class,'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class,'login']);
 Route::post('register', [RegisterController::class,'register']);
@@ -83,6 +82,8 @@ Route::group(['middleware' => 'auth'], function(){
 	// calcluate topsis
 	Route::get('/calculate-topsis', [TransactionController::class, 'topsis'])->name('calculate-topsis');
 	Route::post('/upload-topsis', [TransactionController::class, 'upload'])->name('upload-topsis');
+
+	Route::get('/calculate-saw', [SAWController::class, 'SAW'])->name('calculate-saw');
 
 	//only those have manage_user permission will get access
 	Route::group(['middleware' => 'can:manage_user'], function(){

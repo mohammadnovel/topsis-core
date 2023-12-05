@@ -3,7 +3,7 @@
     <head> 
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Login | Core-Topsis</title>
+        <title>Login | Core-Saw</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,15 +27,15 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <div class="auth-wrapper">
+        <div class="auth-wrapper" style="background-image: -webkit-linear-gradient(top left, #fda300, #8d5b87);">
             <div class="container-fluid h-100">
                 <div class="row flex-row h-100">
                     <div class="col-xl-4 col-lg-4 col-md-4 m-auto">
                         <div class="authentication-form mx-auto">
                             <div class="logo-centered">
-                                <a href="http://manvear.com"><img height="40" src="{{ asset('img/logo.png') }}" alt="RADMIN" ></a>
+                                <a href="http://manvear.com">Login Core-Saw</a>
                             </div>
-                            <p>Holaaa! </p>
+                            <p>Core-Saw Laravel! </p>
                             <form method="POST" action="{{ route('login') }}">
                             @csrf
                                 <div class="form-group">
@@ -56,25 +56,11 @@
                                     </span>
                                 @enderror
                                 </div>
-                                <div class="row">
-                                    <div class="col text-left">
-                                        <label class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="item_checkbox" name="item_checkbox" value="option1">
-                                            <span class="custom-control-label">&nbsp;Remember Me</span>
-                                        </label>
-                                    </div>
-                                    <div class="col text-right">
-                                        <a class="btn text-danger" href="{{url('password/forget')}}">
-                                            {{ __('Forgot Password?') }}
-                                        </a>
-                                    </div>
-                                </div>
+                               
                                 <div class="sign-btn text-center">
                                     <button class="btn btn-custom">Sign In</button>
                                 </div>
-                                <div class="register">
-                                    <p>{{ __('No account?')}} <a href="{{url('register')}}">{{ __('Sign Up')}}</a></p>
-                                </div>
+                                
                                 
                             </form>
                         </div>

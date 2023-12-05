@@ -570,7 +570,7 @@ class TransactionController extends Controller
 
         // Add rank
         $rank = 1;
-        foreach ($resultPreference as &$result) {
+        foreach ($resultPreference as $result) {
             $result['rank'] = $rank++;
         }
         // dd($resultPreference);
