@@ -604,11 +604,47 @@ $(document).ready(function() {
     });
 
     $('#scr-vrt-dt').DataTable({
-        "scrollY": "200px",
+        "scrollY": "500px",
         "scrollCollapse": true,
         "paging": false
     });
 
+    $('#scr-vrt-dt-2').DataTable({
+        "scrollY": "500px",
+        "scrollCollapse": true,
+        "paging": false
+    });
+
+    $('#scr-vrt-dt-3').DataTable({
+        "scrollY": "500px",
+        "scrollCollapse": true,
+        "paging": false
+    });
+    $('#scr-vrt-dt-4').DataTable({
+        "scrollY": "500px",
+        "scrollCollapse": true,
+        "paging": false
+    });
+    $('#scr-vrt-dt-5').DataTable({
+        "scrollY": "500px",
+        "scrollCollapse": true,
+        "paging": false
+    });
+    $('#scr-vrt-dt-6').DataTable({
+        "scrollY": "500px",
+        "scrollCollapse": true,
+        "paging": false
+    });
+    $('#scr-vrt-dt-7').DataTable({
+        "scrollY": "500px",
+        "scrollCollapse": true,
+        "paging": false
+    });
+    $('#scr-vrt-dt-8').DataTable({
+        "scrollY": "500px",
+        "scrollCollapse": true,
+        "paging": false
+    });
     $('#scr-vtr-dynamic').DataTable({
         scrollY: '50vh',
         scrollCollapse: true,
