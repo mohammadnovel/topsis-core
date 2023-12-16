@@ -229,7 +229,7 @@ class TransactionController extends Controller
 
         foreach ($alternatives as $alternative) {
             $normalizedRow = [];
-            // dd($alternative->initials);
+            // dd($alternative->name);
             foreach ($criteriaNames as $criteriaName) {
                 $value = Transaction::where('alternative_id', $alternative->id)
                     ->whereHas('criterias', function ($query) use ($criteriaName) {
@@ -242,7 +242,7 @@ class TransactionController extends Controller
     
             $Matrix[$alternative->id] = [
                 'id' => $alternative->id,
-                'name' => $alternative->initials,
+                'name' => $alternative->name,
                 'values' => $normalizedRow,
             ];
         }
@@ -302,7 +302,7 @@ class TransactionController extends Controller
     
             $normalizedMatrix[$alternative->id] = [
                 'id' => $alternative->id,
-                'name' => $alternative->initials,
+                'name' => $alternative->name,
                 'values' => $normalizedRow,
             ];
         }
@@ -546,7 +546,7 @@ class TransactionController extends Controller
 
             $results[] = [
                 'id' => $alternativeId,
-                'name' => $alternative->initials,
+                'name' => $alternative->name,
                 'DPositive_value' => $positiveValue,
                 'DNegative_value' => $negativeValue,
                 'result' => number_format($totalValue, 3,'.',','),
@@ -575,5 +575,68 @@ class TransactionController extends Controller
         }
         // dd($resultPreference);
         return $resultPreference;
+    }
+
+    public function rankServerSide(Request $request)
+    {
+      $criterias = Criteria::all();
+  
+      //matrix awal
+      $matrix = $this->Matrix();
+      // Step 1: Normalize the Decision Matrix
+      $normalizedMatrix = $this->normalizeDecisionMatrix();
+      // Step 2: Determine Weighted Normalized Decision Matrix
+      $weightedMatrix = $this->calculateWeightedMatrix($normalizedMatrix);
+  
+      // Step 3: Determine Ideal and Negative-Ideal Solutions
+      $idealSolution = $this->calculateIdealSolution($weightedMatrix);
+      // dd($idealSolution);
+      // Step 4: Calculate Separation Measures
+      $distances = $this->calculateDistances($idealSolution);
+      // dd($distances);
+  
+      // Step 5: Calculate Relative Closeness to the Ideal Solution
+      $resultPreference = $this->calculatePreference($distances);
+  
+      // Step 6: Rank the Alternatives
+      $rankedAlternatives = $this->rankAlternatives($resultPreference);
+  
+  
+      if ($request->ajax()) {
+        
+          $criterias = Criteria::all();
+  
+          //matrix awal
+          $matrix = $this->Matrix();
+          // Step 1: Normalize the Decision Matrix
+          $normalizedMatrix = $this->normalizeDecisionMatrix();
+          // Step 2: Determine Weighted Normalized Decision Matrix
+          $weightedMatrix = $this->calculateWeightedMatrix($normalizedMatrix);
+  
+          // Step 3: Determine Ideal and Negative-Ideal Solutions
+          $idealSolution = $this->calculateIdealSolution($weightedMatrix);
+          // dd($idealSolution);
+          // Step 4: Calculate Separation Measures
+          $distances = $this->calculateDistances($idealSolution);
+          // dd($distances);
+  
+          // Step 5: Calculate Relative Closeness to the Ideal Solution
+          $resultPreference = $this->calculatePreference($distances);
+  
+          // Step 6: Rank the Alternatives
+          $rankedAlternatives = $this->rankAlternatives($resultPreference);
+          // array_slice($rankedAlternatives, 0, 5);
+          if ($request->filterLimit) {
+          $dataTable = DataTables::of(array_slice($rankedAlternatives, 0, $request->filterLimit));
+          } else {
+            $dataTable = DataTables::of($rankedAlternatives);
+
+          }
+  
+        return $dataTable->make(true);
+      }
+  
+  
+      // dd($rankedAlternatives);
     }
 }

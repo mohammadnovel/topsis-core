@@ -5,7 +5,7 @@
     @push('head')
     <link rel="stylesheet" href="{{ asset('plugins/DataTables/datatables.min.css') }}">
 
-        <link rel="stylesheet" href="{{ asset('plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}"> --}}
     @endpush
     <div class="container-fluid">
         <div class="page-header">
@@ -531,8 +531,18 @@
 
                     </div>
                     <div class="card-body p-0 table-border-style">
+                        <div class="row p-4">
+                            <div class="col-sm-6">
+                                <div class="input-group input-group-button">
+                                    <input type="number" id="limitVal" min="1" class="form-control" placeholder="Jumlah Filter">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" id="filterLimit">{{ __('Filter')}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                        <div class="dt-responsive p-4">
-                            <table id="scr-vrt-dt-8"
+                            <table id="DTResult"
                                    class="table table-striped table-bordered nowrap">
                                 <thead>
                                     <tr>
@@ -545,7 +555,7 @@
                                        
                                     </tr>
                                 </thead>
-                                <tbody>
+                                {{-- <tbody>
                                     @foreach ($rankedAlternatives as $result)
                                     <tr>
                                         <th scope="row">{{ $loop->index + 1 }}</th>
@@ -556,7 +566,7 @@
                                         <td> {{ $result['rank'] }} </td>
                                     </tr>
                                     @endforeach
-                                </tbody>
+                                </tbody> --}}
                             </table>
                         </div>
                     </div>
@@ -571,7 +581,164 @@
 
     <script src="{{ asset('plugins/DataTables/datatables.min.js') }}"></script>
     <script src="{{ asset('js/datatables.js') }}"></script>
-        
+    <script>
+        $(document).ready(function () {
+          $("#limitVal").on('input', function () {
+              var inputValue = $(this).val();
+              if (inputValue === '0' || inputValue.startsWith('0')) {
+                  $(this).val('');
+              }
+          });
+      });
+         // Datatable Start
+         let Datatable = (function () {
+            let init = function () {
+                let table = $("#DTResult").DataTable({
+                    language: {
+                        processing: '<i class="ace-icon fa fa-spinner fa-spin orange bigger-500" style="font-size:60px;margin-top:50px;"></i>'
+                    },
+                    dom: "<'row'<'col-sm-2'l><'col-sm-7 text-center'B><'col-sm-3'f>>tipr",
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: "{{ route('transaction.rank-serverside') }}",
+                        type: "POST",
+                        data: function (d) {
+                            d._token = "{{ csrf_token() }}";
+                            d.filterLimit = $("#limitVal").val();
+                        }
+                    },
+                    columns: [
+                        { data: 'id', name: 'id' },
+                        { data: 'name', name: 'name' },
+                        { data: 'DPositive_value', name: 'DPositive_value' },
+                        { data: 'DNegative_value', name: 'DNegative_value' },
+                        { data: 'result', name: 'result' },
+                        { data: 'rank', name: 'rank' },
+                    ],
+                    order: [[5, 'asc']],
+                    columnDefs: [
+                        {
+                            "targets": 0,
+                            "className": "text-center",
+                            "width": "7%",
+                        },
+                    ],
+                    buttons: [
+                        {
+                            extend: 'copy',
+                            className: 'btn-sm btn-info',
+                            title: 'Data Narapidana',
+                            header: false,
+                            footer: true,
+                            exportOptions: {
+                                // columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'csv',
+                            className: 'btn-sm btn-success',
+                            title: 'Data Narapidana',
+                            header: false,
+                            footer: true,
+                            exportOptions: {
+                                // columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'excel',
+                            className: 'btn-sm btn-warning',
+                            title: 'Data Narapidana',
+                            header: false,
+                            footer: true,
+                            exportOptions: {
+                                // columns: ':visible',
+                            }
+                        },
+                        {
+                            extend: 'pdf',
+                            className: 'btn-sm btn-primary',
+                            title: 'Data Narapidana',
+                            pageSize: 'A4',
+                            header: false,
+                            footer: true,
+                            exportOptions: {
+                                // columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'print',
+                            className: 'btn-sm btn-default',
+                            title: 'Data Narapidana',
+                            // orientation:'landscape',
+                            pageSize: 'A4',
+                            header: true,
+                            footer: false,
+                            orientation: 'landscape',
+                            exportOptions: {
+                                orthogonal: 'export',
+                                stripHtml: false
+                            }
+                        }
+                    ],
+                    initComplete: function () {
+                        var api =  this.api();
+                        // api.columns(searchable).every(function () {
+                        //     var column = this;
+                        //     var input = document.createElement("input");
+                        //     input.setAttribute('placeholder', $(column.header()).text());
+                        //     input.setAttribute('style', 'width: 140px; height:25px; border:1px solid whitesmoke;');
+
+                        //     $(input).appendTo($(column.header()).empty())
+                        //     .on('keyup', function () {
+                        //         column.search($(this).val(), false, false, true).draw();
+                        //     });
+
+                        //     $('input', this.column(column).header()).on('click', function(e) {
+                        //         e.stopPropagation();
+                        //     });
+                        // });
+
+                        // api.columns(selectable).every( function (i, x) {
+                        //     var column = this;
+
+                        //     var select = $('<select style="width: 140px; height:25px; border:1px solid whitesmoke; font-size: 12px; font-weight:bold;"><option value="">'+$(column.header()).text()+'</option></select>')
+                        //         .appendTo($(column.header()).empty())
+                        //         .on('change', function(e){
+                        //             var val = $.fn.dataTable.util.escapeRegex(
+                        //                 $(this).val()
+                        //             );
+                        //             column.search(val ? '^'+val+'$' : '', true, false ).draw();
+                        //             e.stopPropagation();
+                        //         });
+
+                        //     $.each(dropdownList[i], function(j, v) {
+                        //         select.append('<option value="'+v+'">'+v+'</option>')
+                        //     });
+                        // });
+                    }
+                });
+            };
+
+            return {
+                init: function () {
+                    init();
+                },
+            };
+        })();
+      // Datatable End
+
+      // Filtering start
+      $('#filterLimit').on('click', function() {
+        $('#DTResult').DataTable().ajax.reload();
+
+      });
+      // Filtering End
+
+      jQuery(document).ready(function() {
+        Datatable.init();
+      });
+    </script>
     @endpush
 @endsection
    

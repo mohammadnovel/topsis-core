@@ -74,6 +74,9 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::post('/transaction/update', [TransactionController::class,'update']);
 	Route::get('/transaction/delete/{id}', [TransactionController::class,'delete']);
 	Route::post('/transaction-upload', [TransactionController::class, 'upload'])->name('upload-transaction');
+
+	Route::post('/rank-serverside', [TransactionController::class, 'rankServerSide'])->name('transaction.rank-serverside');
+
 	// dashboard route  
 	Route::get('/dashboard', function () { 
 		return view('pages.dashboard'); 
