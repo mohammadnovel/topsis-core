@@ -583,15 +583,15 @@
     <script src="{{ asset('js/datatables.js') }}"></script>
     <script>
         $(document).ready(function () {
-          $("#limitVal").on('input', function () {
-              var inputValue = $(this).val();
-              if (inputValue === '0' || inputValue.startsWith('0')) {
-                  $(this).val('');
-              }
-          });
-      });
+            $("#limitVal").on('input', function () {
+                var inputValue = $(this).val();
+                if (inputValue === '0' || inputValue.startsWith('0')) {
+                    $(this).val('');
+                }
+            });
+        });
          // Datatable Start
-         let Datatable = (function () {
+        let Datatable = (function () {
             let init = function () {
                 let table = $("#DTResult").DataTable({
                     language: {
@@ -609,7 +609,12 @@
                         }
                     },
                     columns: [
-                        { data: 'id', name: 'id' },
+                        { 
+                            data: 'id', 
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
                         { data: 'name', name: 'name' },
                         { data: 'DPositive_value', name: 'DPositive_value' },
                         { data: 'DNegative_value', name: 'DNegative_value' },
