@@ -75,9 +75,10 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('/transaction/delete/{id}', [TransactionController::class,'delete']);
 	Route::post('/transaction-upload', [TransactionController::class, 'upload'])->name('upload-transaction');
 	// dashboard route  
-	Route::get('/dashboard', function () { 
-		return view('pages.dashboard'); 
-	})->name('dashboard');
+	// Route::get('/dashboard', function () { 
+	// 	return view('pages.dashboard'); 
+	// })->name('dashboard');
+	Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
 	// calcluate topsis
 	Route::get('/calculate-topsis', [TransactionController::class, 'topsis'])->name('calculate-topsis');
