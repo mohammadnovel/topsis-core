@@ -27,15 +27,15 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <div class="auth-wrapper" style="background-image: -webkit-linear-gradient(top left, #fda300, #8d5b87);">
+        <div class="auth-wrapper" style="background-image: -webkit-linear-gradient(top left, #01ff8d, #f819de);">
             <div class="container-fluid h-100">
                 <div class="row flex-row h-100">
                     <div class="col-xl-4 col-lg-4 col-md-4 m-auto">
                         <div class="authentication-form mx-auto">
                             <div class="logo-centered">
-                                <a href="http://manvear.com">Login Core-Saw</a>
+                                <a href="https://saw-maman.manvear.com/">Login Perhitungan SAW</a>
                             </div>
-                            <p>Core-Saw Laravel! </p>
+                            <p>Perhitungan SAW  </p>
                             <form method="POST" action="{{ route('login') }}">
                             @csrf
                                 <div class="form-group">
