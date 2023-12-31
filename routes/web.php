@@ -11,8 +11,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\SAWController;
+use App\Http\Controllers\TransactionController;
 use App\Models\Transaction;
 
 /*
@@ -69,11 +69,14 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('/transactions', [TransactionController::class,'index'])->name('transaction.index');
 	Route::get('/transaction/get-list', [TransactionController::class,'gettransactionList']);
 	Route::get('/transaction/create', [TransactionController::class,'create']);
-	Route::post('/transaction/create', [TransactionController::class,'store'])->name('create-transaction');
+	Route::post('/transaction/create', [TransactionController::class,'store'])->name('store-transaction');
 	Route::get('/transaction/{id}', [TransactionController::class,'edit']);
-	Route::post('/transaction/update', [TransactionController::class,'update']);
+	Route::put('/transaction/update/{id}', [TransactionController::class, 'update']);
+
 	Route::get('/transaction/delete/{id}', [TransactionController::class,'delete']);
 	Route::post('/transaction-upload', [TransactionController::class, 'upload'])->name('upload-transaction');
+    // Route::post('/transaction/store', [TransactionController::class, 'store'])->name('store-transaction');
+
 	// dashboard route  
 	Route::get('/dashboard', function () { 
 		return view('pages.dashboard'); 

@@ -179,11 +179,22 @@ class SAWController extends Controller
         usort($resultPreference, function ($a, $b) {
             return $b['result'] <=> $a['result'];
         });
-
         // Add rank
         $rank = 1;
+        $previousResult = null;
+    
         foreach ($resultPreference as &$result) {
-            $result['rank'] = $rank++;
+            if ($previousResult !== null && $result['result'] === $previousResult) {
+                // If 'result' is the same as the previous one, use the previous rank
+                $result['rank'] = $rank - 1;
+            } else {
+                // Otherwise, assign the current rank and update previousResult
+                $result['rank'] = $rank;
+                $previousResult = $result['result'];
+                $rank++;
+
+            }
+    
         }
         // dd($resultPreference);
         return $resultPreference;
