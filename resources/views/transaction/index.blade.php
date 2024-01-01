@@ -187,7 +187,7 @@
                               </label>
                               <!--end::Label-->
                               <input type="hidden" value="{{ $crt->id }}" name="criteria_id[]">
-                              <input type="number" class="form-control form-control-solid" min="1" 
+                              <input type="number" class="form-control form-control-solid" min="0" 
                                 placeholder="Masukan Nilai {{ $crt->name }} Value" name="weight[]" required />
                             </div>
                           @endforeach
@@ -325,7 +325,7 @@
         </span>
       </label>
       <input type="hidden" id="" value="${trans.criterias.id}" name="criteria_id[]">
-      <input type="number" id="weightEdit" value="${trans.value}" class="form-control form-control-solid" min="1"
+      <input type="number" id="weightEdit" value="${trans.value}" class="form-control form-control-solid" min="0"
         placeholder="Masukan Nilai " name="weightEdit[]" required />
     </div>`;
 
