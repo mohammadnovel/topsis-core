@@ -25,4 +25,9 @@ class Alternative extends Model
 
         return $initials;
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'alternative_id', 'id');
+    }
 }
