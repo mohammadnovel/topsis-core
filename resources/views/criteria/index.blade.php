@@ -27,7 +27,7 @@
                                 <a href="{{route('dashboard')}}"><i class="ik ik-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">{{ __('Kriterua')}}</a>
+                                <a href="#">{{ __('Kriteria')}}</a>
                             </li>
                         </ol>
                     </nav>
@@ -42,14 +42,14 @@
             
 			<div class="col-md-12">
 	            <div class="card">
-	                <div class="card-header"><h3>{{ __('Add Criteria')}}</h3></div>
+	                <div class="card-header"><h3>{{ __('Add Kriteria')}}</h3></div>
 	                <div class="card-body">
 	                    <form class="forms-sample" method="POST" action="{{url('criteria/create')}}">
 	                    	@csrf
 	                        <div class="row">
 	                            <div class="col-sm-12">
 	                                <div class="form-group">
-	                                    <label for="name">{{ __('Name Criteria')}}<span class="text-red">*</span></label>
+	                                    <label for="name">{{ __('Name Kriteria')}}<span class="text-red">*</span></label>
 	                                    <input type="text" class="form-control " id="name" name="name" placeholder=" Name" required>
 	                                </div>
 	                            </div>

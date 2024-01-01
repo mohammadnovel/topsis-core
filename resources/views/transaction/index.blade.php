@@ -1,5 +1,5 @@
 @extends('layouts.main') 
-@section('title', 'Transactions')
+@section('title', 'Data Perhitungan')
 @section('content')
     <!-- push external head elements to head -->
     @push('head')
@@ -14,8 +14,8 @@
                     <div class="page-header-title">
                         <i class="ik ik-users bg-blue"></i>
                         <div class="d-inline">
-                            <h5>{{ __('Transactions')}}</h5>
-                            <span>{{ __('List of Transactions')}}</span>
+                            <h5>{{ __('Data Perhitungan')}}</h5>
+                            <span>{{ __('List Perhitungan')}}</span>
                         </div>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                                 <a href="{{route('dashboard')}}"><i class="ik ik-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">{{ __('Transaction')}}</a>
+                                <a href="#">{{ __('Data Perhitungan')}}</a>
                             </li>
                         </ol>
                     </nav>
@@ -41,14 +41,14 @@
             
 			{{-- <div class="col-md-12">
 	            <div class="card">
-	                <div class="card-header"><h3>{{ __('Add Transaction')}}</h3></div>
+	                <div class="card-header"><h3>{{ __('Add Perhitungan')}}</h3></div>
 	                <div class="card-body">
 	                    <form class="forms-sample" method="POST" action="{{url('transaction/create')}}">
 	                    	@csrf
 	                        <div class="row">
 	                            <div class="col-sm-12">
 	                                <div class="form-group">
-	                                    <label for="name">{{ __('Name Transaction')}}<span class="text-red">*</span></label>
+	                                    <label for="name">{{ __('Name Perhitungan')}}<span class="text-red">*</span></label>
 	                                    <input type="text" class="form-control " id="name" name="name" placeholder=" Name" required>
 	                                </div>
 	                            </div>
@@ -71,7 +71,7 @@
             <div class="col-md-12">
                 
                 <div class="card p-3">
-                    <div class="card-header"><h3>{{ __('Transaction')}}</h3></div>
+                    <div class="card-header"><h3>{{ __('Perhitungan')}}</h3></div>
                     <div class="card-body template-demo">
                             
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#demoModal">{{ __('Upload Data Excel')}}</button>

@@ -14,8 +14,8 @@
                     <div class="page-header-title">
                         <i class="ik ik-users bg-blue"></i>
                         <div class="d-inline">
-                            <h5>{{ __('Alternative')}}</h5>
-                            <span>{{ __('List of Alternative')}}</span>
+                            <h5>{{ __('Alternatif')}}</h5>
+                            <span>{{ __('List of Alternatif')}}</span>
                         </div>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                                 <a href="{{route('dashboard')}}"><i class="ik ik-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">{{ __('Alternative')}}</a>
+                                <a href="#">{{ __('Alternatif')}}</a>
                             </li>
                         </ol>
                     </nav>
@@ -41,14 +41,14 @@
             
 			<div class="col-md-12">
 	            <div class="card">
-	                <div class="card-header"><h3>{{ __('Add Alternative')}}</h3></div>
+	                <div class="card-header"><h3>{{ __('Add Alternatif')}}</h3></div>
 	                <div class="card-body">
 	                    <form class="forms-sample" method="POST" action="{{url('alternative/create')}}">
 	                    	@csrf
 	                        <div class="row">
 	                            <div class="col-sm-12">
 	                                <div class="form-group">
-	                                    <label for="name">{{ __('Name Alternative')}}<span class="text-red">*</span></label>
+	                                    <label for="name">{{ __('Name Alternatif')}}<span class="text-red">*</span></label>
 	                                    <input type="text" class="form-control " id="name" name="name" placeholder=" Name" required>
 	                                </div>
 	                            </div>
@@ -71,7 +71,7 @@
             <div class="col-md-12">
                 
                 <div class="card p-3">
-                    <div class="card-header"><h3>{{ __('Alternative')}}</h3></div>
+                    <div class="card-header"><h3>{{ __('Alternatif')}}</h3></div>
                     <div class="card-body template-demo">
                             
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#demoModal">{{ __('Upload Data Excel')}}</button>

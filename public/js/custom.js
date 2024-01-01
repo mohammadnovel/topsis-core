@@ -286,7 +286,7 @@
                 loadingIndicator: false
             },
             pagingType: "full_numbers",
-            dom: "<'row'<'col-sm-2'l><'col-sm-7 text-center'B><'col-sm-3'f>>tipr",
+            // dom: "<'row'<'col-sm-2'l><'col-sm-7 text-center'B><'col-sm-3'f>>tipr",
             ajax: {
                 url: 'criteria/get-list',
                 type: "get"
@@ -428,7 +428,7 @@
                 loadingIndicator: false
             },
             pagingType: "full_numbers",
-            dom: "<'row'<'col-sm-2'l><'col-sm-7 text-center'B><'col-sm-3'f>>tipr",
+            // dom: "<'row'<'col-sm-2'l><'col-sm-7 text-center'B><'col-sm-3'f>>tipr",
             ajax: {
                 url: 'alternative/get-list',
                 type: "get"
@@ -562,7 +562,7 @@
                 loadingIndicator: false
             },
             pagingType: "full_numbers",
-            dom: "<'row'<'col-sm-2'l><'col-sm-7 text-center'B><'col-sm-3'f>>tipr",
+            // dom: "<'row'<'col-sm-2'l><'col-sm-7 text-center'B><'col-sm-3'f>>tipr",
             ajax: {
                 url: 'transaction/get-list',
                 type: "get"
