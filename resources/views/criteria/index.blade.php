@@ -42,20 +42,20 @@
             
 			<div class="col-md-12">
 	            <div class="card">
-	                <div class="card-header"><h3>{{ __('Add Kriteria')}}</h3></div>
+	                <div class="card-header"><h3>{{ __('Tambah Kriteria')}}</h3></div>
 	                <div class="card-body">
 	                    <form class="forms-sample" method="POST" action="{{url('criteria/create')}}">
 	                    	@csrf
 	                        <div class="row">
 	                            <div class="col-sm-12">
 	                                <div class="form-group">
-	                                    <label for="name">{{ __('Name Kriteria')}}<span class="text-red">*</span></label>
+	                                    <label for="name">{{ __('Nama Kriteria')}}<span class="text-red">*</span></label>
 	                                    <input type="text" class="form-control " id="name" name="name" placeholder=" Name" required>
 	                                </div>
 	                            </div>
                                 <div class="col-sm-12">
 	                                <div class="form-group">
-	                                    <label for="type">{{ __('Type')}}
+	                                    <label for="type">{{ __('Tipe')}}
                                             <span class="text-red">*</span></label>
                                         <select class="form-control select2" id="" name="type">
                                             <option value="BENEFIT">{{ __('BENEFIT')}}</option>
