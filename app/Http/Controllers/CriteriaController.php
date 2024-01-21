@@ -81,6 +81,12 @@ class CriteriaController extends Controller
         }
         try
         {
+            $totalWeight = Criteria::sum('weight');
+            $totalWeightNew = $totalWeight + $request->weight;
+            if ($totalWeight === 100 || $totalWeightNew > 100 ) {
+                # code...
+                return redirect('criterias')->with('error', 'Data Bobot Tidak Boleh Lebih dari 100!.');
+            }
             // store criteria information
             $criteria = Criteria::create([
                         'name'     => $request->name,
