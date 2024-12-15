@@ -174,25 +174,34 @@
                       </div>
                       <!--end::Input group-->
                       <!--begin::Input group-->
-                      <div class="mb-8 d-flex flex-column fv-row">
-                        <div class="row g-9">
-                          @foreach ($criterias as $crt)
-                            <div class="col-12 pt-2">
-                              <!--begin::Label-->
-                              <label class="mb-2 d-flex align-items-center fs-6 fw-semibold">
-                                <span class="required">{{ $crt->name }} <span class="text-red">*</span></span>
-                                <span class="ms-1" data-bs-toggle="tooltip" title="Criteria Name">
-                                  <i class="text-gray-500 ki-outline ki-information-5 fs-6"></i>
-                                </span>
-                              </label>
-                              <!--end::Label-->
-                              <input type="hidden" value="{{ $crt->id }}" name="criteria_id[]">
-                              <input type="number" class="form-control form-control-solid" min="0" step="any" 
-                                placeholder="Masukan Nilai {{ $crt->name }} Value" name="weight[]" required />
+                        <div class="mb-8 d-flex flex-column fv-row">
+                            <div class="row g-9">
+                                @foreach ($criterias as $crt)
+                                    <div class="col-12 pt-2">
+                                        <!--begin::Label-->
+                                        <label class="mb-2 d-flex align-items-center fs-6 fw-semibold">
+                                            <span class="required">{{ $crt->name }} <span class="text-red">*</span></span>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="Criteria Name">
+                                                <i class="text-gray-500 ki-outline ki-information-5 fs-6"></i>
+                                            </span>
+                                        </label>
+                                        <!--end::Label-->
+                                        
+                                        <input type="hidden" value="{{ $crt->id }}" name="criteria_id[]">
+
+                                        <!-- Select2 -->
+                                        <select class="form-control select2 form-control-solid" name="weight[]" required>
+                                            <option value="">{{ __('Pilih Nilai') }}</option>
+                                            @foreach ($crt->details as $detail)
+                                                <option value="{{ $detail->value }}">{{ $detail->value }} - {{ $detail->description }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endforeach
                             </div>
-                          @endforeach
                         </div>
-                      </div>
+
+
                       <!--end::Input group-->
                       <!--begin::Actions-->
                       <div class="pt-4">
@@ -291,6 +300,15 @@
     <script src="{{ asset('js/custom.js') }}"></script>
     <script src="{{ asset('js/form-components.js') }}"></script>
     <script src="{{ asset('plugins/toastr/build/toastr.min.js')}} "></script>
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2({
+                placeholder: "Pilih Nilai",
+                allowClear: true,
+                width: '100%' // Responsif untuk seluruh layar
+            });
+        });
+    </script>
     <script>
 
     @if (session('success'))

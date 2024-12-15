@@ -19,10 +19,19 @@ class TransactionController extends Controller
     public function index()
     {
         $alternatives = Alternative::all();
-        $criterias = Criteria::all();
-        // dd($criterias);
+
+        // Sort details based on criteria type (benefit or cost)
+        $criterias = Criteria::with(['details' => function ($query) {
+            $query->when(request()->get('type') === 'benefit', function ($q) {
+                $q->orderBy('value', 'asc'); // Ascending for benefit
+            })->when(request()->get('type') === 'cost', function ($q) {
+                $q->orderBy('value', 'desc'); // Descending for cost
+            });
+        }])->get();
+
         return view('transaction.index', compact('alternatives', 'criterias'));
     }
+
 
     public function getTransactionList(Request $request)
     {

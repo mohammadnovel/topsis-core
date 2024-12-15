@@ -70,9 +70,10 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('/transactions', [TransactionController::class,'index'])->name('transaction.index');
 	Route::get('/transaction/get-list', [TransactionController::class,'gettransactionList']);
 	Route::get('/transaction/create', [TransactionController::class,'create']);
-	Route::post('/transaction/create', [TransactionController::class,'store'])->name('create-transaction');
+	Route::post('/transaction/create', [TransactionController::class,'store'])->name('store-transaction');
 	Route::get('/transaction/{id}', [TransactionController::class,'edit']);
-	Route::post('/transaction/update', [TransactionController::class,'update']);
+	Route::put('/transaction/update/{id}', [TransactionController::class, 'update']);
+
 	Route::get('/transaction/delete/{id}', [TransactionController::class,'delete']);
 	Route::post('/transaction-upload', [TransactionController::class, 'upload'])->name('upload-transaction');
 
