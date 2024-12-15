@@ -27,7 +27,7 @@
                                 <a href="{{route('dashboard')}}"><i class="ik ik-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">{{ __('Kriterua')}}</a>
+                                <a href="#">{{ __('Kriteria')}}</a>
                             </li>
                         </ol>
                     </nav>
@@ -101,6 +101,7 @@
                                     <th>{{ __('Name')}}</th>
                                     <th>{{ __('Type')}}</th>
                                     <th>{{ __('Weight')}}</th>
+                                    <th>{{ __('Total Crips')}}</th>
                                     <th>{{ __('Action')}}</th>
                                 </tr>
                             </thead>

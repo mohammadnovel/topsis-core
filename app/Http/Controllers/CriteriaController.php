@@ -32,19 +32,33 @@ class CriteriaController extends Controller
     public function getCriteriaList(Request $request)
     {
         
-        $data  = Criteria::get();
+        // $data  = Criteria::get();
+        $data = Criteria::withCount('details') // Menghitung total crips (detail) untuk setiap criteria
+        ->get();
 
         return Datatables::of($data)
-                
+                 ->addColumn('total_crips', function ($data) {
+                    return $data->details_count; // Menampilkan total crips berdasarkan count
+                })
                 ->addColumn('action', function($data){
                     if($data->name == 'Super Admin'){
                         return '';
                     }
                     if (Auth::user()->can('manage_criteria')){
-                        return '<div class="table-actions">
-                                <a href="'.url('criteria/'.$data->id).'" ><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
-                                <a href="'.url('criteria/delete/'.$data->id).'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-                            </div>';
+                        return '
+                            <div class="table-actions">
+                                <a href="' . url('criteria/' . $data->id) . '" class="btn btn-sm btn-success text-white">
+                                    <i class="ik ik-edit-2"></i> Edit
+                                </a>
+                                <a href="' . url('criteria-detail/' . $data->id) . '" class="btn btn-sm btn-info text-white">
+                                    <i class="ik ik-archive"></i> Crips
+                                </a>
+                                <a href="' . url('criteria/delete/' . $data->id) . '" class="btn btn-sm btn-danger text-white" onclick="return confirm(\'Are you sure you want to delete this criteria?\')">
+                                    <i class="ik ik-trash-2"></i> Delete
+                                </a>
+                            </div>
+                        ';
+
                     }else{
                         return '';
                     }

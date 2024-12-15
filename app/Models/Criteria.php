@@ -22,6 +22,11 @@ class Criteria extends Model
      */
     public function transactions()
     {
-        return $this->hasMany(Transaction::class, 'critreria_id', 'id');
+        return $this->hasMany(Transaction::class, 'criteria_id', 'id');
+    }
+
+    public function details()
+    {
+        return $this->hasMany(CriteriaDetail::class, 'criteria_id', 'id');
     }
 }

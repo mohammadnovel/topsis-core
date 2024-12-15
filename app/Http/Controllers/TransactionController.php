@@ -18,7 +18,10 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        return view('transaction.index');
+        $alternatives = Alternative::all();
+        $criterias = Criteria::all();
+        // dd($criterias);
+        return view('transaction.index', compact('alternatives', 'criterias'));
     }
 
     public function getTransactionList(Request $request)
@@ -34,8 +37,8 @@ class TransactionController extends Controller
                     }
                     if (Auth::user()->can('manage_transaction')){
                         return '<div class="table-actions">
-                                <a href="'.url('transaction/'.$data->id).'" ><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
-                                <a href="'.url('transaction/delete/'.$data->id).'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                                <a href="#" data-bs-toggle="modal" onClick="ShowModalEdit(' . $data->alternative_id . ')" data-id="' . $data->alternative_id . '"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
+                                <a onclick="Delete(' . $data->alternative_id . ')" data-id="' . $data->alternative_id . '" href="#"><i class="ik ik-trash-2 f-16 text-red"></i></a>
                             </div>';
                     }else{
                         return '';
@@ -64,85 +67,76 @@ class TransactionController extends Controller
 
     public function store(Request $request)
     {
-        // create user 
         $validator = Validator::make($request->all(), [
             'alternative_id'     => 'required',
             'criteria_id'     => 'required',
             'value'     => 'required',
-        ]);
-        
-        if($validator->fails()) {
-            return redirect()->back()->withInput()->with('error', $validator->messages()->first());
-        }
-        try
-        {
-            // store alternative information
-            $transaction = Transaction::create([
-                        'alternative_id'     => $request->alternative_id,
-                        'criteria_id'     => $request->criteria_id,
-                        'value'     => $request->value,
-                    ]);
-
-            if($transaction){ 
-                return redirect('transactions')->with('success',' transaksi telah berhasil di tambah!');
-            }else{
-                return redirect('transactions')->with('error', 'Failed to create new transaction! Try again.');
+          ]);
+          try {
+            // dd($request);
+            foreach ($request->criteria_id as $key => $crtId) {
+              $transaction = Transaction::create([
+                'alternative_id'     => $request->alternative_id,
+                'criteria_id'     => $crtId,
+                'value'     => $request->weight[$key],
+              ]);
             }
-        }catch (\Exception $e) {
-            $bug = $e->getMessage();
-            return redirect()->back()->with('error', $bug);
-        }
+      
+      
+            return response()->json([
+              'success' => true,
+              'message' => 'Transaction has been added!',
+              'data'    => $transaction
+            ], 201);
+          } catch (\Exception $e) {
+            return response()->json([
+              'error' => true,
+              'message' => 'Transaction failed to added!',
+              'data' => $e->getMessage(),
+            ], 500);
+          }
     }
 
     public function edit($id)
     {
-        try
-        {
-            $transaction  = Transaction::find($id);
+        try {
+        //   $transaction  = Transaction::with('alternatives')->find($id);
+        $transaction  = Alternative::with('transactions', 'transactions.criterias')->where('id', $id)->first();
 
-            if($transaction){
+        if ($transaction) {
 
-                return view('transactio$transaction.edit', compact('transactio$transaction'));
-            }else{
-                return redirect('404');
-            }
-
-        }catch (\Exception $e) {
-            $bug = $e->getMessage();
-            return redirect()->back()->with('error', $bug);
+            return response()->json($transaction);
+        } else {
+            return redirect('404');
+        }
+        } catch (\Exception $e) {
+        $bug = $e->getMessage();
+        return redirect()->back()->with('error', $bug);
         }
     }
 
     public function update(Request $request)
     {
+        try {
+        $transactions = Transaction::where('alternative_id', $request->id)->get();
 
-        // update user info
-        $validator = Validator::make($request->all(), [
-            'id'       => 'required',
-            'alternative_id'     => 'required',
-            'criteria_id'     => 'required',
-            'value'     => 'required',
-        ]);
-
-        
-        
-        if ($validator->fails()) {
-            return redirect()->back()->withInput()->with('error', $validator->messages()->first());
+        foreach ($transactions as $key => $transaction) {
+            $transaction->update([
+            'value' => $request->weights[$key],
+            ]);
         }
 
-        try{
-            
-            $transaction = Transaction::find($request->id);
-            // dd($transaction);
-
-            $update = $transaction->update([
-                'name' => $request->name,
-            ]);
-            return redirect('transactions')->with('success', 'transaction information updated succesfully!');
-        }catch (\Exception $e) {
-            $bug = $e->getMessage();
-            return redirect()->back()->with('error', $bug);
-
+        return response()->json([
+            'success' => true,
+            'message' => 'Transactions have been updated!',
+            'data'    => $transactions,
+        ], 200);
+        } catch (\Exception $e) {
+        return response()->json([
+            'error' => true,
+            'message' => 'Transactions failed to update!',
+            'data' => $e->getMessage(),
+        ], 500);
         }
     }
 

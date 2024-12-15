@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\CriteriaController;
+use App\Http\Controllers\CriteriaDetailController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolesController;
@@ -76,6 +77,16 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::post('/transaction-upload', [TransactionController::class, 'upload'])->name('upload-transaction');
 
 	Route::post('/rank-serverside', [TransactionController::class, 'rankServerSide'])->name('transaction.rank-serverside');
+
+	Route::prefix('criteria-detail')->group(function () {
+		Route::get('/{criteriaId}', [CriteriaDetailController::class, 'index'])->name('criteria-detail.index');
+		Route::get('/list/{criteriaId}', [CriteriaDetailController::class, 'getCriteriaList'])->name('criteria-detail.list');
+		Route::post('/store/{criteriaId}', [CriteriaDetailController::class, 'store'])->name('criteria-detail.store');
+		Route::get('/edit/{id}', [CriteriaDetailController::class, 'edit'])->name('criteria-detail.edit');
+		Route::put('/update/{id}', [CriteriaDetailController::class, 'update'])->name('criteria-detail.update');
+		Route::delete('/delete/{id}', [CriteriaDetailController::class, 'destroy'])->name('criteria-detail.destroy');
+	});
+
 
 	// dashboard route  
 	Route::get('/dashboard', function () { 

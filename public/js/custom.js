@@ -296,6 +296,7 @@
                 {data:'name', name: 'name'},
                 {data:'type', name: 'type'},
                 {data:'weight', name: 'weight'},
+                {data:'total_crips', name: 'total_crips'},
                 //only those have manage_user permission will get access
                 {data:'action', name: 'action'}
 
