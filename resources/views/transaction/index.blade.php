@@ -90,6 +90,8 @@
                                     <th>{{ __('Inisial')}}</th>
                                     <th>{{ __('Criteria')}}</th>
                                     <th>{{ __('Nilai')}}</th>
+                                    <th>{{ __('Deskripsi')}}</th>
+
                                     <th>{{ __('Action')}}</th>
                                 </tr>
                             </thead>

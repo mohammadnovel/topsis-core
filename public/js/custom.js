@@ -563,6 +563,8 @@
                 {data: 'alternatives.initials', name: 'alternatives.initials'},
                 {data: 'criterias.name', name: 'criterias.name'},
                 {data: 'value', name: 'value'},
+                { data: 'description', name: 'description' }, // Kolom untuk deskripsi
+
                 {data:'action', name: 'action'}
 
             ],

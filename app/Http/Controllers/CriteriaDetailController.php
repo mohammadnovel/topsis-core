@@ -10,6 +10,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use DataTables,Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
 class CriteriaDetailController extends Controller
 {
     /**
@@ -63,7 +65,12 @@ class CriteriaDetailController extends Controller
         try {
             $request->validate([
                 'criteria_id' => 'required',
-                'value' => 'required',
+                'value' => [
+                    'required',
+                    Rule::unique('criteria_details')->where(function ($query) use ($criteriaId) {
+                        return $query->where('criteria_id', $criteriaId);
+                    })
+                ],
                 'description' => 'required',
             ]);
 
@@ -75,6 +82,7 @@ class CriteriaDetailController extends Controller
             return redirect()->route('criteria-detail.index', $criteriaId)->with('error', 'Failed to add criteria detail.');
         }
     }
+
 
     public function edit($id)
     {
@@ -91,12 +99,18 @@ class CriteriaDetailController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $detail = CriteriaDetail::findOrFail($id);
+
             $request->validate([
-                'value' => 'required',
+                'value' => [
+                    'required',
+                    Rule::unique('criteria_details')->where(function ($query) use ($detail) {
+                        return $query->where('criteria_id', $detail->criteria_id);
+                    })->ignore($id)
+                ],
                 'description' => 'required',
             ]);
 
-            $detail = CriteriaDetail::findOrFail($id);
             $detail->update($request->only(['value', 'description']));
 
             return redirect()->route('criteria-detail.index', $detail->criteria_id)
@@ -107,6 +121,7 @@ class CriteriaDetailController extends Controller
                 ->with('error', 'Failed to update criteria detail.');
         }
     }
+
 
 
     public function destroy($id)

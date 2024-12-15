@@ -8,6 +8,7 @@ use App\Models\Alternative;
 use App\Models\Transaction;
 
 use App\Imports\TransactionImport;
+use App\Models\CriteriaDetail;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -35,30 +36,43 @@ class TransactionController extends Controller
 
     public function getTransactionList(Request $request)
     {
-        
-        $data  = Transaction::with(['criterias','alternatives'])->get();
+        try {
+            // Mengambil data transaction dengan relasi
+            $data = Transaction::with(['criterias', 'alternatives'])->get();
 
-        return Datatables::of($data)
-                
-                ->addColumn('action', function($data){
-                    if($data->name == 'Super Admin'){
-                        return '';
-                    }
-                    if (Auth::user()->can('manage_transaction')){
+            return Datatables::of($data)
+                ->addColumn('description', function ($data) {
+                    // Ambil deskripsi dari criteria_detail berdasarkan criteria_id dan value
+                    $criteriaDetail = CriteriaDetail::where('criteria_id', $data->criteria_id)
+                        ->where('value', $data->value)
+                        ->first();
+
+                    return $criteriaDetail ? $criteriaDetail->description : 'No description available';
+                })
+                ->addColumn('action', function ($data) {
+                    if (Auth::user()->can('manage_transaction')) {
                         return '<div class="table-actions">
-                                <a href="#" data-bs-toggle="modal" onClick="ShowModalEdit(' . $data->alternative_id . ')" data-id="' . $data->alternative_id . '"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
-                                <a onclick="Delete(' . $data->alternative_id . ')" data-id="' . $data->alternative_id . '" href="#"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-                            </div>';
-                    }else{
-                        return '';
+                                    <a href="#" data-bs-toggle="modal" onClick="ShowModalEdit(' . $data->alternative_id . ')" data-id="' . $data->alternative_id . '">
+                                        <i class="ik ik-edit-2 f-16 mr-15 text-green"></i>
+                                    </a>
+                                    <a onclick="Delete(' . $data->alternative_id . ')" data-id="' . $data->alternative_id . '" href="#">
+                                        <i class="ik ik-trash-2 f-16 text-red"></i>
+                                    </a>
+                                </div>';
                     }
+                    return '';
                 })
                 ->editColumn('created_at', function ($data) {
                     return Carbon::parse($data->created_at)->format('Y-m-d H:i');
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'description'])
                 ->make(true);
+        } catch (\Exception $e) {
+            Log::error('Error fetching transaction list: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to fetch transaction list.'], 500);
+        }
     }
+
 
     public function create()
     {
